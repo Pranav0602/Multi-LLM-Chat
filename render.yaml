@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: multi-llm-chat
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    env:
+      DATABASE_URL: postgresql+psycopg2://research:research@<DB_HOST>:5432/research_chat
+    ports:
+      - 8000

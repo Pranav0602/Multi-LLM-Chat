@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/groups(.*)", "destination": "https://YOUR-RAILWAY-URL.railway.app" },
+    { "source": "/models(.*)", "destination": "https://YOUR-RAILWAY-URL.railway.app" },
+    { "source": "/conversations(.*)", "destination": "https://YOUR-RAILWAY-URL.railway.app" },
+    { "source": "/health", "destination": "https://YOUR-RAILWAY-URL.railway.app" }
+  ]
+}

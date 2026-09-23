@@ -37,7 +37,7 @@ class Settings(BaseSettings):
     CODECRAFT_API_KEY: str = ""
     CODECRAFT_BASE_URL: str = "https://codecraftapi.com/v1"
 
-    CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000"
+    CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000,https://multi-llm-chat-sandy.vercel.app"
 
 
 settings = Settings()

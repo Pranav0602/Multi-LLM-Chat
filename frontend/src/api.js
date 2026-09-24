@@ -3,8 +3,13 @@ const RAW_URL =
   (import.meta.env.DEV ? '' : 'https://multi-llm-chat-production.up.railway.app');
 const BASE = RAW_URL.replace(/\/+$/, '');
 
+function joinUrl(path) {
+  const p = path.startsWith('/') ? path : `/${path}`;
+  return (BASE + p).replace(/([^:]\/)\/+/g, '$1');
+}
+
 async function req(path, opts = {}) {
-  const res = await fetch(BASE + path, {
+  const res = await fetch(joinUrl(path), {
     headers: { 'Content-Type': 'application/json' },
     ...opts,
   });

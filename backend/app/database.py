@@ -20,7 +20,16 @@ if db_url.startswith("sqlite"):
     # Required for SQLite + FastAPI threads.
     connect_args = {"check_same_thread": False}
 
-engine = create_engine(db_url, connect_args=connect_args, future=True)
+try:
+    engine = create_engine(db_url, connect_args=connect_args, future=True)
+except Exception as exc:
+    # Bad/unreachable dialect config must not crash the process at import.
+    print(f"WARNING: falling back to SQLite engine ({exc})", flush=True)
+    engine = create_engine(
+        "sqlite:///./research_chat.db",
+        connect_args={"check_same_thread": False},
+        future=True,
+    )
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, future=True)
 
 Base = declarative_base()

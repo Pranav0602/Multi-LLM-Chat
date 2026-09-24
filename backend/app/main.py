@@ -14,8 +14,12 @@ from . import models  # noqa: F401
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    Base.metadata.create_all(bind=engine)
-    ensure_chat_type_column()
+    try:
+        Base.metadata.create_all(bind=engine)
+        ensure_chat_type_column()
+    except Exception as exc:
+        # Never block startup: a dead DB must not turn /health into a 502.
+        print(f"WARNING: database init failed: {exc}", flush=True)
     yield
 
 

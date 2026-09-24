@@ -1,4 +1,7 @@
-const BASE = import.meta.env.VITE_API_URL || '';
+const RAW_URL =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.DEV ? '' : 'https://multi-llm-chat-production.up.railway.app');
+const BASE = RAW_URL.replace(/\/+$/, '');
 
 async function req(path, opts = {}) {
   const res = await fetch(BASE + path, {

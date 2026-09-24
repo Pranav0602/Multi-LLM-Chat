@@ -3,6 +3,7 @@
 Follows implementation plan sections 6 (sliding window) and 17 (token mgmt).
 All values are overridable via environment variables / .env file.
 """
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -38,6 +39,16 @@ class Settings(BaseSettings):
     CODECRAFT_BASE_URL: str = "https://codecraftapi.com/v1"
 
     CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000,https://multi-llm-chat-sandy.vercel.app"
+
+    @field_validator("DATABASE_URL", mode="after")
+    @classmethod
+    def _normalize_db_url(cls, v: str) -> str:
+        """Railway injects postgres:// which SQLAlchemy 2.x no longer accepts."""
+        if not v:
+            return "sqlite:///./research_chat.db"
+        if v.startswith("postgres://"):
+            return "postgresql://" + v[len("postgres://"):]
+        return v
 
 
 settings = Settings()
